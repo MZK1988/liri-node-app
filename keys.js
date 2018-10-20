@@ -1,4 +1,4 @@
-console.log('Max Korenvaes');
+console.log('From Keys.js');
 
 exports.spotify = {
   id: process.env.SPOTIFY_ID,
