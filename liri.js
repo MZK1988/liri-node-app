@@ -7,7 +7,25 @@ var Spotify = require("node-spotify-api");
 
 var spotify  =  new Spotify(keys.spotify);
 
-var movieName = process.argv[2];
+var nodeArgs = process.argv;
+
+var movieName = "";
+
+
+for(var i = 2; i < nodeArgs.length; i++) {
+  if(i > 2 && i < nodeArgs.length) {
+    movieName = movieName + "+" + nodeArgs[i];
+  }
+
+  else {
+    movieName += nodeArgs[i];
+  }
+}
+
+
+
+
+
 
 var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
@@ -27,28 +45,22 @@ request(queryUrl, function(error, response, body) {
     console.log(JSON.parse(body));
     console.log("-------------------");
     console.log("Release Year:");
-    console.log("-------------------");
     console.log(JSON.parse(body).Year);
     console.log("-------------------");
     console.log("IMDB Rating:");
-    console.log("-------------------");
     console.log(JSON.parse(body).imdbRating);
     console.log("-------------------");
     console.log("Release Country:");
-    console.log("-------------------");
     // console.log(JSON.parse(body).ratings.source);
     console.log(JSON.parse(body).Country);
     console.log("-------------------");
     console.log("Release Language:");
-    console.log("-------------------");
     console.log(JSON.parse(body).Language);
     console.log("-------------------");
     console.log("Plot:");
-    console.log("-------------------");
     console.log(JSON.parse(body).Plot);
     console.log("-------------------");
     console.log("Actors:");
-    console.log("-------------------");
     console.log(JSON.parse(body).Actors);
     console.log("-------------------");
   }
