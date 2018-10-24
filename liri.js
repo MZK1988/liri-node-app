@@ -7,18 +7,18 @@ var Spotify = require("node-spotify-api");
 
 var spotify  =  new Spotify(keys.spotify);
 
-var nodeArgs = process.argv;
+var movieArgs = process.argv;
 
 var movieName = "";
 
 
-for(var i = 2; i < nodeArgs.length; i++) {
-  if(i > 2 && i < nodeArgs.length) {
-    movieName = movieName + "+" + nodeArgs[i];
+for(var i = 2; i < movieArgs.length; i++) {
+  if(i > 2 && i < movieArgs.length) {
+    movieName = movieName + "+" + movieArgs[i];
   }
 
   else {
-    movieName += nodeArgs[i];
+    movieName += movieArgs[i];
   }
 }
 
@@ -44,6 +44,9 @@ request(queryUrl, function(error, response, body) {
     console.log("-------------------");
     console.log(JSON.parse(body));
     console.log("-------------------");
+    console.log("Title:");
+    console.log(JSON.parse(body).Title);
+    console.log("-------------------");
     console.log("Release Year:");
     console.log(JSON.parse(body).Year);
     console.log("-------------------");
@@ -66,29 +69,8 @@ request(queryUrl, function(error, response, body) {
   }
 });
 
-// var commandOne = process.argv[2];
-// var commandCap = process.argv[]
-// var title = null;
 
-// if (commandOne = "movie-this") {
-//   for(i = 3; i < commandCap.length; i++) {
-//     if(commandCap != "") {
-//         title = 
-//     }
-//   }
 
-// } 
-
-request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function(error, response, body) {
-
-  // If the request is successful (i.e. if the response status code is 200)
-  if (!error && response.statusCode === 200) {
-
-    // Parse the body of the site and recover just the imdbRating
-    // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-    console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
-  }
-});
 
 
 
