@@ -8,12 +8,13 @@ var Spotify = require("node-spotify-api");
 var spotify  =  new Spotify(keys.spotify);
 
 var movieArgs = process.argv;
+var command = process.argv[2];
 
 var movieName = "";
 
 
-for(var i = 2; i < movieArgs.length; i++) {
-  if(i > 2 && i < movieArgs.length) {
+for(var i = 3; i < movieArgs.length; i++) {
+  if(i > 3 && i < movieArgs.length) {
     movieName = movieName + "+" + movieArgs[i];
   }
 
@@ -23,7 +24,7 @@ for(var i = 2; i < movieArgs.length; i++) {
 }
 
 
-
+if (command === "movie-this") {
 
 
 
@@ -69,7 +70,7 @@ request(queryUrl, function(error, response, body) {
   }
 });
 
-
+} else {console.log("Invalid Command");}
 
 
 
