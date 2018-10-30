@@ -85,14 +85,14 @@ if (command === "movie-this") {
 
 
       console.log("JSON PARSED BODY:");
-      console.log(JSON.parse(body));
+      console.log(JSON.parse(body)[0]);
       console.log("-------------------");
 
 
 
 
       console.log("VENUE NAME:");
-      console.log(JSON.stringify(body.venue));
+      console.log(JSON.parse(body)[0].venue.name);
       console.log("-------------------");
 
 
