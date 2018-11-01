@@ -1,4 +1,5 @@
 require('dotenv').config();
+var fs = require("fs");
 var request = require("request");
 var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
@@ -29,7 +30,7 @@ for (var i = 3; i < commandArgs.length; i++) {
 }
 
 
-if (command === "movie-this") {
+if (command === "movie-this" && search != "") {
 
 
 
@@ -71,11 +72,11 @@ if (command === "movie-this") {
     }
   });
 
-} else if (command === "concert-this") {
+} else if (command === "concert-this" && search != "") {
 
   var queryUrl = "https://rest.bandsintown.com/artists/" + search + "/events?app_id=codingbootcamp"
 
-  
+
 
   request(queryUrl, function (error, response, body) {
 
@@ -84,17 +85,6 @@ if (command === "movie-this") {
       console.log("ARTIST:")
       console.log(name);
       console.log("-------------------");
-      // for (i = 0; i < body.length; i++) {
-      //   console.log(JSON.parse(body)[i].venue.name);
-      //   console.log(JSON.parse(body)[i].datetime);
-      // }
-      // console.log("JSON PARSED BODY:");
-      // console.log(JSON.parse(body)[0]);
-      // console.log("-------------------");
-
-
-
-      
       console.log("VENUE NAME:");
       console.log(JSON.parse(body)[0].venue.name);
       console.log("-------------------");
@@ -105,30 +95,52 @@ if (command === "movie-this") {
       console.log(JSON.parse(body)[0].datetime);
       console.log("-------------------");
 
-
-
-
-
-
-
-    }//close error if
-  }//close request
+    }
+  }
 
   )
-}//close command if
+}
 
-else if (command === "spotify-this-song") {
- 
-  spotify.search({ type: 'track', query: search }, function(err, data) {
-      if ( err ) {
-          console.log('Error occurred: ' + err);
-          return;
-      } else {
-        //console.log(data.tracks.items[0])
-        for (let i = 0; i < data.tracks.items.length; i++) {
-          
-          
-          console.log(data.tracks.items[i].name);
+else if (command === "spotify-this-song" && search != "") {
+
+  spotify.search({ type: 'track', query: search }, function (err, data) {
+    if (err) {
+      console.log('Error occurred: ' + err);
+      return;
+    } else {
+      //console.log(data.tracks.items[0])
+      for (let i = 0; i < data.tracks.items.length; i++) {
+
+
+
+        console.log("ARTIST: ")
+        console.log(data.tracks.items[i].artists[0].name);
+        console.log("LINK: ")
+        console.log(data.tracks.items[i].artists[0].external_urls.spotify);
+        console.log("SONG NAME: ")
+        console.log(name);
+        console.log("ALBUM: ")
+        console.log(data.tracks.items[i].album.name);
+        console.log("______________________________________")
+      }
+    }
+
+  });
+
+} else if (command === "spotify-this-song" && search === "") {
+  var song = "the+sign"
+  var name = "The Sign"
+  spotify.search({ type: 'track', query: song }, function (err, data) {
+    if (err) {
+      console.log('Error occurred: ' + err);
+      return;
+    } else {
+
+      for (let i = 0; i < data.tracks.items.length; i++) {
+
+        if (data.tracks.items[i].artists[0].name === "Ace of Base") {
+
+          console.log("______________________________________")
           console.log("ARTIST: ")
           console.log(data.tracks.items[i].artists[0].name);
           console.log("LINK: ")
@@ -136,25 +148,74 @@ else if (command === "spotify-this-song") {
           console.log("SONG NAME: ")
           console.log(name);
           console.log("ALBUM: ")
-          console.log(data.tracks.items[i].artists[0].album);
+          console.log(data.tracks.items[i].album.name);
           console.log("______________________________________")
+
+
+
+
         }
       }
-      
+    }
+
   });
-//   var queryUrl = "https://api.spotify.com/v1/search?q=" + search + "&type=artist" 
+} else if (command === "do-what-it-says") {
+    
+    fs.readFile("random.txt", "utf8", function (error, data) {
+      if (error) {
+        return console.log(error);
+      }
 
-//   console.log(queryUrl);
+      
+      
 
-//   request(queryUrl, function (error, response, body) {
+      // Then split it by commas (to make it more readable)
+      var dataArr = data.split(",");
 
-//     // If the request is successful (i.e. if the response status code is 200)
-//     if (!error && response.statusCode === 200) {
-//       console.log(body);
+      // We will then re-display the content as an array for later use.
+      
+      var execute = dataArr[1];
+      var concatenate = execute.split(" ").join("+");
+      console.log(concatenate);
 
-//     } else {console.log("error");}
+      spotify.search({ type: 'track', query: concatenate }, function (err, data) {
+        if (err) {
+          console.log('Error occurred: ' + err);
+          return;
+        } else {
+    
+          for (let i = 0; i < data.tracks.items.length; i++) {
+    
+            
+    
+              console.log("______________________________________")
+              console.log("ARTIST: ")
+              console.log(data.tracks.items[i].artists[0].name);
+              console.log("LINK: ")
+              console.log(data.tracks.items[i].artists[0].external_urls.spotify);
+              console.log("SONG NAME: ")
+              console.log(execute);
+              console.log("ALBUM: ")
+              console.log(data.tracks.items[i].album.name);
+              console.log("______________________________________")
+    
+    
+    
+    
+            
+          }
+        }
+    
+      });
 
-           
-// });
 
-}
+
+
+
+
+
+
+
+    });
+
+  }
